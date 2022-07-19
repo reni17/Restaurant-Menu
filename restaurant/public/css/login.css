@@ -1,0 +1,29 @@
+.loginSection{
+    margin:auto;
+    background-color: #dda6a6;
+    text-align: center;
+    padding: 0;
+   
+}
+
+.form-label{
+    font-size: 20px;
+    font-family: 'Spectral', serif;
+}
+
+#loginHeader{
+    font-size: 30px;
+    font-family: 'Spectral', serif;
+}
+/* #form3Example1q{
+    text-align: center;
+    padding-right: 0;
+} */
+
+.login-container{
+    text-align: center;
+    border: 2px solid black;
+    margin-left: 170px;
+    margin-top: 10px;
+}
+

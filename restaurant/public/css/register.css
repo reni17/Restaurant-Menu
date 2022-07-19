@@ -1,0 +1,27 @@
+#registerSection{
+    margin:auto;
+    background-color: #dda6a6;
+    text-align: center;
+    padding: 0;
+}
+.form-label{
+    font-size: 20px;
+    font-family: 'Spectral', serif;
+}
+img{
+    border-top-left-radius: .3rem; 
+    border-top-right-radius: .3rem;
+}
+
+
+#register-header{
+    text-align: center;
+    padding-right: 0;
+}
+
+.register-container{
+    text-align: center;
+    border: 2px solid black;
+    margin-left: 170px;
+    margin-top: 10px;
+}
