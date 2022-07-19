@@ -20,11 +20,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Phone number is required'],
         min: [10, 'Phone number  should be at least 10 characters long!']
-    }
-//    orders: [{
-//     type: mongoose.Types.ObjectId,
-//        ref: 'Food'
-//    }]
+    },
+   orders: [{
+    type: mongoose.Types.ObjectId,
+       ref: 'Food'
+   }]
 })
 
 const userModel = mongoose.model('User', UserSchema);
