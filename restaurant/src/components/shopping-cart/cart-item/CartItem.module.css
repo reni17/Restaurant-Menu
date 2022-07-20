@@ -1,0 +1,41 @@
+
+.item-name {
+    display: block;
+    padding-top: 10px;
+    font-size: 16px;
+  }
+.item-price {
+    color: #6394F8;
+    margin-right: 8px;
+  }
+ .item-quantity {
+    color: #ABB0BE;
+  }
+
+  .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .imgStyle {
+    float: left;
+    margin-right: 12px;
+    width: 100px;
+  }
+  
+.button {
+  background: #dda6a6;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  display: inline;
+  border-radius: 3px;
+  font-size: 16px;
+  margin: 25px 0 15px 0;
+}
+.button:hover {
+  background: #fbc7c7;
+
+}

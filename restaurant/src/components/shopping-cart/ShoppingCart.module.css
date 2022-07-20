@@ -80,22 +80,10 @@ nav ul li a:hover {
 .shopping-cart .shopping-cart-items li {
   margin-bottom: 18px;
 }
-.shopping-cart .shopping-cart-items img {
+/* .shopping-cart .shopping-cart-items img {
   float: left;
   margin-right: 12px;
-}
-.shopping-cart .shopping-cart-items .item-name {
-  display: block;
-  padding-top: 10px;
-  font-size: 16px;
-}
-.shopping-cart .shopping-cart-items .item-price {
-  color: #6394F8;
-  margin-right: 8px;
-}
-.shopping-cart .shopping-cart-items .item-quantity {
-  color: #ABB0BE;
-}
+} */
 
 .shopping-cart:after {
   bottom: 100%;
@@ -119,7 +107,7 @@ nav ul li a:hover {
 }
 
 .button {
-  background: #6394F8;
+  background: #dda6a6;
   color: white;
   text-align: center;
   padding: 12px;
@@ -130,11 +118,6 @@ nav ul li a:hover {
   margin: 25px 0 15px 0;
 }
 .button:hover {
-  background: #729ef9;
+  background: #fbc7c7;
 }
 
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
-}

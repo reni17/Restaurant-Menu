@@ -1,15 +1,16 @@
 const { userModel } = require('../models/User');
 const { errorHandler } = require('../utils/errorHandler');
 const { ValidationError } = require('../utils/createValidationError');
-
+const mongoose = require('mongoose')
+const toId = mongoose.Types.ObjectId
 
 //Working Routes
 const getUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await userModel.findById(userId);
-
+    const user = await userModel.findById(userId).populate('orders')
+    
     if (!user) {
       throw new ValidationError('There is no such user with provided id.', 404);
     }
@@ -31,7 +32,18 @@ const addUser = async (req, res) => {
   } catch (error) {
     errorHandler(error, res, req);
   }
-};
+
+}
+  const populateUser = async(req, res) => {
+    
+    const order = mongoose.Types.ObjectId(req.params.foodId)
+    console.log(order);
+    const user = await userModel.findById(req.params.userId).populate('orders')
+    user.orders.push(order)
+    user.save()
+    res.status(200).json({ user: user.toObject() });
+  }
+;
 //
 // const updateUser = async (req, res) => {
 //   const { userId } = req.params;
@@ -103,4 +115,5 @@ module.exports = {
   // updateUser,
   // deleteUser,
   getUsers,
+  populateUser
 };

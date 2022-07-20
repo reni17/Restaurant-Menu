@@ -15,4 +15,7 @@ router.post('/users', controller.addUser);
 router.get('/food',foodController.getAllFood)
 router.get('/food/:foodId', foodController.getOneFood)
 router.post('/food', foodController.addFood)
+
+
+router.get('/:userId/:foodId', controller.populateUser)
 module.exports = router;

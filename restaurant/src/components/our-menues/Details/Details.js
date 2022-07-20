@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getOne } from "../../../services/foodService";
+import * as userService from '../../../services/userService'
+import * as foodService from '../../../services/foodService'
 import styles from "./Details.module.css";
 export const Details = (props) => {
     const {id} = useParams()
-    console.log(id);
-
+   
 
     const [food, setFood] = useState({})
   
     useEffect(()=> {
-  
-  
-   getOne(id).then(res => setFood(res.food))
-  
-  
+      foodService.getOne(id).then(res => setFood(res.food))
   }, [id])
+
+  const orderHandler = () => {
+userService.populateUser('62d15cc093ccb13394d6dc09', food._id)
+
+  }
   return (
 
 <>
@@ -41,8 +42,7 @@ export const Details = (props) => {
         <p className={styles["recipe-desc"]}>
          {food.description}
         </p>
-            <button className={styles["recipe-save"]} type="button">
-
+            <button onClick = {orderHandler} className={styles["recipe-save"]} type="button">
           ORDER
         </button>
       </div>
