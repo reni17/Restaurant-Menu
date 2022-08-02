@@ -16,7 +16,7 @@ router.get('/logout', controller.logout)
 router.get('/food',foodController.getAllFood)
 router.get('/food/:foodId', foodController.getOneFood)
 router.post('/food', foodController.addFood)
-router.get('/food/:foodId', foodController.deleteFood)
+router.delete('/food/:foodId', foodController.deleteFood)
 
 
 router.get('/:userId/:foodId', controller.populateUser)

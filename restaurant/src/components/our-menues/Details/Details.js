@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { AdminContext } from "../../../contexts/AdminContext";
  import * as authService from '../../../services/authService'
@@ -14,10 +14,7 @@ export const Details = (props) => {
   const {user} = useContext(AuthContext)
   const {admin} = useContext(AdminContext)
   let {foodId} = useParams()
-
-
-
-
+  const navigate = useNavigate()
     const [food, setFood] = useState({})
     
     useEffect(()=> {
@@ -30,9 +27,21 @@ export const Details = (props) => {
     authService.populateUser(user._id, food._id)
     }
 
+
     const deleteHandler = () => {
-      foodService.deleteFood(food._id)
-    }
+      const deleted = foodService.deleteFood(food._id)
+      .then(res => res.json(deleted))
+      .then(data => {
+        let newFoods = food.filter(item=> item._id !== data._id)
+        setFood(newFoods)
+      })
+      .catch(error => console.log(error))
+    
+      navigate('/menus')
+      }
+
+
+    
   
   return (
 

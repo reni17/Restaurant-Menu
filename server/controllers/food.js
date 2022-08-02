@@ -49,7 +49,7 @@ const getAllFood = async (req, res) => {
       const food = await foodModel.findById(foodId);
   
       if (!food) {
-        throw new ValidationError('There is no such user with provided id.', 404);
+        throw new ValidationError('There is no such food with provided id.', 404);
       }
   
       res.status(200).json({ food: food.toObject() });
@@ -73,10 +73,13 @@ const addFood = async (req, res) => {
   };
 
   const deleteFood = async (req, res) => {
-
-    const deletedFood = await foodModel.deleteOne({_id: req.params.foodId})
-    console.log(deletedFood);
-    res.status(200).json({ food: deletedFood.toObject() });
+try{
+  const deletedFood = await foodModel.deleteOne({_id: req.params.foodId})
+    res.status(200).json({ deletedFood });
+}catch(err){
+  errorHandler(error, res, req);
+}
+  
   }
   // const updateFood = async (req, res) => {
   //   console.log(req);
@@ -84,15 +87,6 @@ const addFood = async (req, res) => {
   //  res.status(200).json({ food: updatedFood.toObject() });
   // }
 
-  // const deleteFood = async(req, res) => {
- 
-  //   const order = mongoose.Types.ObjectId(req.params.foodId)
-  //   const user = await userModel.findById(req.params.userId).populate('orders')
-
-  //   // user.orders = filteredOrders
-  //   user.save()
-  //   res.status(200).json({ user: user.toObject() });
-  // }
   
 module.exports = {
     getAllFood,
