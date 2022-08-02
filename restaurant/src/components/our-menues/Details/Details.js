@@ -1,22 +1,39 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import * as userService from '../../../services/userService'
+import { AuthContext } from "../../../contexts/AuthContext";
+import { AdminContext } from "../../../contexts/AdminContext";
+ import * as authService from '../../../services/authService'
 import * as foodService from '../../../services/foodService'
 import styles from "./Details.module.css";
+
+
+
+
+
 export const Details = (props) => {
-    const {id} = useParams()
-   
+  const {user} = useContext(AuthContext)
+  const {admin} = useContext(AdminContext)
+  let {foodId} = useParams()
+
+
+
 
     const [food, setFood] = useState({})
-  
+    
     useEffect(()=> {
-      foodService.getOne(id).then(res => setFood(res.food))
-  }, [id])
+      foodService.getOne(foodId).then(res => setFood(res.food))
+     
+    }, [foodId])
 
-  const orderHandler = () => {
-userService.populateUser('62d15cc093ccb13394d6dc09', food._id)
 
-  }
+    const orderHandler = () => {
+    authService.populateUser(user._id, food._id)
+    }
+
+    const deleteHandler = () => {
+      foodService.deleteFood(food._id)
+    }
+  
   return (
 
 <>
@@ -42,9 +59,13 @@ userService.populateUser('62d15cc093ccb13394d6dc09', food._id)
         <p className={styles["recipe-desc"]}>
          {food.description}
         </p>
-            <button onClick = {orderHandler} className={styles["recipe-save"]} type="button">
-          ORDER
+        <button onClick = {orderHandler} className={styles["recipe-save"]} type="button">
+           ORDER
         </button>
+        {admin &&  
+        <button onClick = {deleteHandler} className={styles["recipe-save"]} type="button">
+           DELETE
+        </button>}
       </div>
     </article>
   </div>

@@ -1,8 +1,14 @@
 const { userModel } = require('../models/User');
+const {foodModel} = require('../models/Food')
 const { errorHandler } = require('../utils/errorHandler');
 const { ValidationError } = require('../utils/createValidationError');
 const mongoose = require('mongoose')
-const toId = mongoose.Types.ObjectId
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+
+const secret = 'hduerhef748fuheri'
+
 
 //Working Routes
 const getUser = async (req, res) => {
@@ -21,39 +27,123 @@ const getUser = async (req, res) => {
   }
 };
 
+
+const createToken = (user) => {
+
+  const payload = { _id: user._id, email: user.email}
+  
+  return new Promise((resolve, reject) => {
+     jwt.sign(payload, secret, { expiresIn: "2d" }, (err, decodedToken) => {
+              if(err){
+                  reject(err)
+                  console.log("Error");
+              }
+              resolve(decodedToken)
+            });
+  })  
+  }
+
+  
+// LOGIN
+const loginHandler = async (email, password) => {
+    
+    const user = await userModel.findOne({ email });
+console.log(user);
+    if (!user) {
+      throw { message: "Email is not valid" };
+    }
+console.log(user.password, password);
+    const validPass = await bcrypt.compare(password, user.password);
+
+
+    if (!validPass) {
+      throw { message: "Password is not valid" };
+    }
+
+return user
+};
+
+
+  const login = async(req, res) => {
+    const {email, password} = req.body
+
+    try{
+
+      const user = await loginHandler(email, password)
+  
+      const token = await createToken(user)
+      res.cookie('session', token, {httpOnly: true})
+      res.status(200).json({ email: user.email, _id: user._id, accessToken: token });
+
+  }catch(error){
+   console.log(error);
+  }
+  }
+
+
+
+// REGISTER
+
 const addUser = async (req, res) => {
-  const { email, password, phoneNumber} = req.body;
-  const data = {  email, password, phoneNumber};
+  const { email, phoneNumber, password, repeatPassword} = req.body;
+
+  const data = { email, phoneNumber, password};
+
+  if (password !== repeatPassword) {
+    res.status(404).send({error: "Password don't match"})
+  }
 
   try {
     const createdUser = await userModel.create({...data});
+    const token = await createToken(createdUser)
+ 
+    const cookie = res.cookie('session', token, {httpOnly: true})
+    res.status(200).json({ email: createdUser.email, _id: createdUser._id, accessToken: token });
 
-    res.status(200).json({ createdUser });
   } catch (error) {
     errorHandler(error, res, req);
   }
 
 }
+
+//LOGOUT
+const logout = (req, res) => {
+ 
+  const cookie = res.clearCookie("session");
+  res.status(200).json({cookie: "done"});
+}
+
   const populateUser = async(req, res) => {
     
     const order = mongoose.Types.ObjectId(req.params.foodId)
-    console.log(order);
     const user = await userModel.findById(req.params.userId).populate('orders')
     user.orders.push(order)
     user.save()
     res.status(200).json({ user: user.toObject() });
   }
+
+  const updateUser = async(req, res) => {
+    
+//  const order = foodModel.findById(req.params.foodId)
+
+    const user = await userModel.findById(req.params.userId)
+  
+    user.orders = user.orders.filter(item => item._id != req.params.foodId )
+    user.save()
+    console.log(user.orders);
+    res.status(200).json({ user: user.toObject() });
+  }
 ;
-//
+// //
 // const updateUser = async (req, res) => {
 //   const { userId } = req.params;
-//   const { email, password, phoneNumber } = req.body;
-//   const data = { firstName, lastName, email, imageUrl, phoneNumber, address };
-
+//   const { email, password, phoneNumber, orders } = req.body;
+//   const data = {  email, password, phoneNumber, orders };
+// console.log(data);
 //   try {
 //     const user = await userModel
 //       .findByIdAndUpdate(userId, data, { runValidators: true, new: true })
-//       .select('firstName lastName email imageUrl phoneNumber createdAt updatedAt');
+
 
 //     res.status(200).json({ user: user.toObject() });
 //   } catch (error) {
@@ -112,8 +202,11 @@ const getUsers = async (req, res) => {
 module.exports = {
   getUser,
   addUser,
-  // updateUser,
+   updateUser,
   // deleteUser,
   getUsers,
-  populateUser
+  populateUser,
+  createToken,
+  login,
+  logout
 };

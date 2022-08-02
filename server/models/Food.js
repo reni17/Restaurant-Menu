@@ -28,10 +28,10 @@ const foodSchema = new mongoose.Schema({
              validator: /^http?/g,
              message: 'Image should be a link!'
         }
+    },
+    quantity: {
+        type: Number
     }
-    // details: {
-        
-    // }
 })
 
 const foodModel = mongoose.model('Food', foodSchema);

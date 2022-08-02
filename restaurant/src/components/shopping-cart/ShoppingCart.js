@@ -1,18 +1,31 @@
 import styles from "./ShoppingCart.module.css"
-import * as userService from '../../services/userService'
-import { useEffect, useState } from "react"
+import * as authService from '../../services/authService'
+import { useEffect, useState, useContext} from "react"
 import { CartItem } from "./cart-item/CartItem"
 import uniqid from 'uniqid';
+import { AuthContext } from "../../contexts/AuthContext";
+
 export const ShoppingCart = () => {
+
 const [cart, setCart] = useState([])
+const {user} = useContext(AuthContext)
+
+
+const currentUser = authService.getUser(user._id)
+
 
 useEffect(()=> {
-  userService.getUser("62d15cc093ccb13394d6dc09")
-  .then(res => setCart(() => res.user.orders))
+  currentUser
+  .then(res => setCart([...res.user.orders]))
   
-},[])
+},[currentUser])
 
-const removeItem = (userid) => {
+const removeItem = (itemToRemove) => {
+
+    authService.updateUser(user._id, itemToRemove._id)
+ 
+   setCart(cart.filter(item => item !== itemToRemove))
+   
 
 }
 
@@ -21,7 +34,7 @@ const totalPrice = (orders)=> {
   orders.forEach(el => {priceCounter += el.price})
   return priceCounter
 }
-console.log(cart);
+
     return(
 
 <div className={styles.container}>
@@ -35,15 +48,12 @@ console.log(cart);
     </div>  
 
     <ul className={styles["shopping-cart-items"]}>
-     {cart.map(order => <CartItem key = {uniqid()} cartItem = {order} quantity = {cart.length}/>)}
+     {cart.map(order => <CartItem removeItem = {removeItem} key = {uniqid()} cartItem = {order} />)}
     </ul>
 
-    <a href="#" className={styles.button}>Checkout</a>
+   
   </div>
 </div> 
-
-
-
 
     )
 }

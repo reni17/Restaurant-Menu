@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const cookies = require('cookie-parser')
 
 const db = require('./config/db');
 const { port, dbConnection } = require('./config/config');
@@ -8,6 +9,7 @@ const { port, dbConnection } = require('./config/config');
 const allowed = ['.js', '.css', '.png', '.jpg', '.jpeg', '.ico'];
 
 const app = express();
+app.use(cookies())
 const start = async () => {
   try {
     await db(dbConnection);

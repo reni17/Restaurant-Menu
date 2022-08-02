@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const saltRounds = 12
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -26,6 +28,14 @@ const UserSchema = new mongoose.Schema({
        ref: 'Food'
    }]
 })
+
+UserSchema.pre('save', function(next){
+    bcrypt.hash(this.password, saltRounds)
+    .then(hashedPassword => {
+     this.password = hashedPassword
+     next()
+    })
+ })
 
 const userModel = mongoose.model('User', UserSchema);
 module.exports = {

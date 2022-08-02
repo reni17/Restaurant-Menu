@@ -60,20 +60,44 @@ const getAllFood = async (req, res) => {
 
   
 const addFood = async (req, res) => {
-    const { name, price, description, type, imageUrl} = req.body;
-    const data = { name, price, description, type, imageUrl};
+    const { name, price, description, type, imageUrl, quantity} = req.body;
+    const data = { name, price, description, type, imageUrl, quantity};
   
     try {
-      const createdUser = await foodModel.create({...data});
+      const createdFood = await foodModel.create({...data});
   
-      res.status(200).json({ createdUser });
+      res.status(200).json({ createdFood });
     } catch (error) {
       errorHandler(error, res, req);
     }
   };
+
+  const deleteFood = async (req, res) => {
+
+    const deletedFood = await foodModel.deleteOne({_id: req.params.foodId})
+    console.log(deletedFood);
+    res.status(200).json({ food: deletedFood.toObject() });
+  }
+  // const updateFood = async (req, res) => {
+  //   console.log(req);
+  //  const updatedFood = await foodModel.findByIdAndUpdate({_id: req.params.foodId}, {$set: req.body}, {runValidators: true})
+  //  res.status(200).json({ food: updatedFood.toObject() });
+  // }
+
+  // const deleteFood = async(req, res) => {
+ 
+  //   const order = mongoose.Types.ObjectId(req.params.foodId)
+  //   const user = await userModel.findById(req.params.userId).populate('orders')
+
+  //   // user.orders = filteredOrders
+  //   user.save()
+  //   res.status(200).json({ user: user.toObject() });
+  // }
   
 module.exports = {
     getAllFood,
     getOneFood,
-    addFood
+    addFood,
+   deleteFood
+
 }
