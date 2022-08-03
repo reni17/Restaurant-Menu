@@ -44,15 +44,15 @@ const getAllFood = async (req, res) => {
 
   const getOneFood = async (req, res) => {
     const { foodId } = req.params;
-  
+   
     try {
       const food = await foodModel.findById(foodId);
-  
+
       if (!food) {
         throw new ValidationError('There is no such food with provided id.', 404);
       }
   
-      res.status(200).json({ food: food.toObject() });
+      res.status(200).json({ food });
     } catch (error) {
       errorHandler(error, res, req);
     }
@@ -79,19 +79,26 @@ try{
 }catch(err){
   errorHandler(error, res, req);
 }
-  
   }
-  // const updateFood = async (req, res) => {
-  //   console.log(req);
-  //  const updatedFood = await foodModel.findByIdAndUpdate({_id: req.params.foodId}, {$set: req.body}, {runValidators: true})
-  //  res.status(200).json({ food: updatedFood.toObject() });
-  // }
 
+const editFood = async (req, res) => {
+  const foodId = req.params.foodId
+  const { name, price, description, type, imageUrl } = req.body;
+  const data = {  name, price, description, type, imageUrl };
+try {
+  const editedFood = await foodModel.findByIdAndUpdate(foodId, data, { runValidators: true, new: true })
+  // .select('name, price, description, type, imageUrl');
+  console.log(editedFood);
+  res.status(200).json({ editedFood});
+} catch (error) {
+  
+}
+}
   
 module.exports = {
     getAllFood,
     getOneFood,
     addFood,
-   deleteFood
-
+    deleteFood,
+    editFood
 }

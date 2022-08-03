@@ -14,7 +14,7 @@ export const Navbar = () => {
     return(
         <div className="header">
         <div className="container">
-            <a href="#" className="navbar-brand scroll-top">Victory</a>
+            <a href="#" className="navbar-brand scroll-top">Restaurant</a>
             <nav className="navbar navbar-inverse" role="navigation">
                 <div className="navbar-header">
                     <button type="button" id="nav-toggle" className="navbar-toggle" data-toggle="collapse" data-target="#main-nav">

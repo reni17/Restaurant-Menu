@@ -17,7 +17,7 @@ router.get('/food',foodController.getAllFood)
 router.get('/food/:foodId', foodController.getOneFood)
 router.post('/food', foodController.addFood)
 router.delete('/food/:foodId', foodController.deleteFood)
-
+router.put('/food/:foodId', foodController.editFood)
 
 router.get('/:userId/:foodId', controller.populateUser)
 router.get('/userUpdate/:userId/:foodId', controller.updateUser)

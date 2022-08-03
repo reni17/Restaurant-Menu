@@ -22,11 +22,14 @@ import * as authService from './services/authService'
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useState } from 'react';
 import { AddFood } from './components/admin/add-food/AddFood';
+import { EditFood } from './components/admin/edit-food/EditFood';
+import { FoodContext } from './contexts/FoodContext';
 
 function App() {
 
 const [auth, setAuth] = useLocalStorage('auth', {})
 const [admin, setAdmin] = useState(false)
+
 
 const isAdmin = (userId) => {
 
@@ -47,9 +50,14 @@ const userLogout = () => {
   return setAuth({})
 }
 
+const editFoodHandler = () => {
+  
+}
+
   return (
       <AuthContext.Provider value = {{user: auth, userLogin, userLogout}}>
       <AdminContext.Provider value = {{isAdmin, admin}}>
+        <FoodContext.Provider value {editFoodHandler}>
     <div className="App">
       <Navbar></Navbar>
     
@@ -59,14 +67,16 @@ const userLogout = () => {
         <Route path='/register' element = {<Register/>}> </Route>
         <Route path='/login' element = {<Login/>}> </Route>
         <Route path='/menus/:typeMenu/' element = {<MenuCatalog/>}> </Route>
-       <Route path = '/logout' element = {<Logout></Logout>}></Route>
+        <Route path = '/logout' element = {<Logout></Logout>}></Route>
         <Route path='/details/:type/:foodId' element = {<Details/>}> </Route>
         <Route path='/shopping-cart' element = {<ShoppingCart/>}></Route>
         <Route path = '/add-food' element = {<AddFood></AddFood>}></Route>
+        <Route path = '/edit-food/:foodId' element = {<EditFood></EditFood>}></Route>
       </Routes>
    
       <Footer/>
     </div>
+    </FoodContext.Provider>
     </AdminContext.Provider>  
     </AuthContext.Provider>
   );
