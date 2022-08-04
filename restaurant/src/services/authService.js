@@ -13,6 +13,7 @@ export const getUser = (id) => {
   export const populateUser = (userId, foodId)  => {
     return fetch(`http://localhost:3005/restaurant/${userId}/${foodId}`)
     .then(res => res.json())
+    .then(data => console.log(data))
     .catch(err => console.log(err))
   }
 
@@ -23,6 +24,22 @@ export const updateUser  = (userId, foodId) => {
 
 
 }
+
+
+// export const updateUser  = (userId, foodId, data) => {
+//   return fetch(`http://localhost:3005/restaurant/userUpdate/${userId}/${foodId}`, {
+//     method: 'Put',
+//     header: {
+//       'content-type': 'application/json'
+//     },
+//     body: JSON.stringify(data)
+//   })
+//   .then(res => res.json())
+//   .then(data => data.user)
+ 
+  
+
+// }
 
 
 const baseUrl = 'http://localhost:3005/restaurant'

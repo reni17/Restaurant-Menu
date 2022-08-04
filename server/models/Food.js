@@ -25,10 +25,13 @@ const foodSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Image is required'],
         validate: {
-             validator: /^http?/g,
-             message: 'Image should be a link!'
-        }
+            validator: function(){
+                return this.imageUrl.startsWith('http')
+            },
+            message: 'Image URL should be a link'
+         }
     },
+    
     quantity: {
         type: Number
     }

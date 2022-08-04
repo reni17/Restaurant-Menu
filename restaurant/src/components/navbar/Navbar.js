@@ -2,12 +2,15 @@ import { Link, NavLink } from "react-router-dom"
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { AdminContext } from "../../contexts/AdminContext";
+import * as authService from '../../services/authService'
+
 export const Navbar = () => {
     const {user} = useContext(AuthContext)
     const {isAdmin, admin} = useContext(AdminContext)
 
-    isAdmin(user._id)
-
+    authService.getUser(user._id)
+    .then(res => isAdmin(res.user))
+    
     let activeStyle = {
         textDecoration: "underline",
       };

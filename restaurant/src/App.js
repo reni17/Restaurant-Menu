@@ -10,7 +10,7 @@ import { MenuCatalog } from './components/our-menues/MenuCatalog/MenuCatalog';
 import { Details } from './components/our-menues/Details/Details';
 import { ShoppingCart } from './components/shopping-cart/ShoppingCart';
 
-import { Register } from './components/Register';
+import { Register } from './components/register/Register';
 import { Login } from './components/Login';
 import { Logout } from './components/logout/Logout';
 
@@ -20,7 +20,7 @@ import * as authService from './services/authService'
 // import { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { useState } from 'react';
+import {  useState } from 'react';
 import { AddFood } from './components/admin/add-food/AddFood';
 import { EditFood } from './components/admin/edit-food/EditFood';
 import { FoodContext } from './contexts/FoodContext';
@@ -31,20 +31,25 @@ const [auth, setAuth] = useLocalStorage('auth', {})
 const [admin, setAdmin] = useState(false)
 
 
-const isAdmin = (userId) => {
+const isAdmin = (user) => {
 
-  if(!userId){
-    return setAdmin(false)
-  }
-return authService.getUser(userId)
-.then(res =>setAdmin(res.user.isAdmin))
+    if(!user){
+      return setAdmin(false)
+    }else{
+      return setAdmin(user.isAdmin)
+    }
 
+  
  
+  // return setAdmin(user.isAdmin)
 }
+
+
 
 const userLogin = (authData) => {
  return setAuth(authData)
 }
+
 
 const userLogout = () => {
   return setAuth({})
@@ -53,13 +58,12 @@ const userLogout = () => {
 const editFoodHandler = () => {
   
 }
-
   return (
       <AuthContext.Provider value = {{user: auth, userLogin, userLogout}}>
       <AdminContext.Provider value = {{isAdmin, admin}}>
-        <FoodContext.Provider value {editFoodHandler}>
+      <FoodContext.Provider value = {editFoodHandler}>
     <div className="App">
-      <Navbar></Navbar>
+      <Navbar/>
     
       <Routes>
         <Route path = '/' element = {<Home/>}> </Route>
@@ -68,7 +72,7 @@ const editFoodHandler = () => {
         <Route path='/login' element = {<Login/>}> </Route>
         <Route path='/menus/:typeMenu/' element = {<MenuCatalog/>}> </Route>
         <Route path = '/logout' element = {<Logout></Logout>}></Route>
-        <Route path='/details/:type/:foodId' element = {<Details/>}> </Route>
+        <Route path='/details/:foodId' element = {<Details/>}> </Route>
         <Route path='/shopping-cart' element = {<ShoppingCart/>}></Route>
         <Route path = '/add-food' element = {<AddFood></AddFood>}></Route>
         <Route path = '/edit-food/:foodId' element = {<EditFood></EditFood>}></Route>

@@ -74,20 +74,24 @@ const addFood = async (req, res) => {
 
   const deleteFood = async (req, res) => {
 try{
+ 
   const deletedFood = await foodModel.deleteOne({_id: req.params.foodId})
     res.status(200).json({ deletedFood });
-}catch(err){
+
+}catch(error){
   errorHandler(error, res, req);
 }
   }
 
 const editFood = async (req, res) => {
+  console.log('edit');
   const foodId = req.params.foodId
   const { name, price, description, type, imageUrl } = req.body;
   const data = {  name, price, description, type, imageUrl };
+  console.log(data);
 try {
-  const editedFood = await foodModel.findByIdAndUpdate(foodId, data, { runValidators: true, new: true })
-  // .select('name, price, description, type, imageUrl');
+  const editedFood = await foodModel.findByIdAndUpdate(foodId, data)
+  .select('name, price, description, type, imageUrl');
   console.log(editedFood);
   res.status(200).json({ editedFood});
 } catch (error) {

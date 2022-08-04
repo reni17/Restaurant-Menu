@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import * as foodService from "../../../services/foodService"
 
-
 export const EditFood = (props) => {
+
     const {foodId} = useParams()
     const [food, setFood] = useState({});
  
@@ -30,11 +30,11 @@ export const EditFood = (props) => {
         const data = Object.fromEntries(new FormData(e.target))
         data.price = Number(data.price)
        
-        const edited = foodService
+        foodService
         .editFood(food._id, data)
-        .then((res) =>setFood(res))
-        navigate('/menus')
+        .then(res =>setFood(res))
         
+        navigate(`/details/${food._id}`)
     }
 
     return (

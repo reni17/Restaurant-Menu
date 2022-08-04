@@ -30,7 +30,7 @@ export const getOne =async (id) => {
 }
 
 export const deleteFood = async (foodId) => {
-
+console.log('delete');
   const response = await fetch(`http://localhost:3005/restaurant/food/${foodId}`, {
      method: 'DELETE'
     

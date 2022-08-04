@@ -114,7 +114,7 @@ const logout = (req, res) => {
 }
 
   const populateUser = async(req, res) => {
-    
+   
     const order = mongoose.Types.ObjectId(req.params.foodId)
     const user = await userModel.findById(req.params.userId).populate('orders')
     user.orders.push(order)
@@ -125,13 +125,18 @@ const logout = (req, res) => {
   const updateUser = async(req, res) => {
     
 //  const order = foodModel.findById(req.params.foodId)
+try {
+     const user = await userModel.findById(req.params.userId)
 
-    const user = await userModel.findById(req.params.userId)
-  
+
     user.orders = user.orders.filter(item => item._id != req.params.foodId )
     user.save()
-    console.log(user.orders);
+
     res.status(200).json({ user: user.toObject() });
+} catch (error) {
+  console.log(error);
+}
+ 
   }
 ;
 // //

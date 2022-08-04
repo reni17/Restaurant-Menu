@@ -1,7 +1,10 @@
-import {register} from '../services/authService'
+import {register} from '../../services/authService'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../contexts/AuthContext'
+import { AuthContext } from '../../contexts/AuthContext'
 import { useContext } from 'react'
+
+
+
 export const Register = () => {
   const navigate = useNavigate()
   const {userLogin} = useContext(AuthContext)

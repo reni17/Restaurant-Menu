@@ -3,7 +3,6 @@ import {  useParams } from "react-router-dom"
 import { MenuItem } from "../MenuItem"
 import styles from './catalog.module.css'
 import { getAll } from "../../../services/foodService"
-
 export const MenuCatalog = () => {
 
     const {typeMenu} = useParams()

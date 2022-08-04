@@ -6,6 +6,7 @@ import * as authService from "../../../services/authService";
 import * as foodService from "../../../services/foodService";
 import styles from "./Details.module.css";
 
+
 export const Details = () => {
   const { user } = useContext(AuthContext);
   const { admin } = useContext(AdminContext);
@@ -27,13 +28,17 @@ export const Details = () => {
       .deleteFood(food._id)
       .then((res) => res.json(deleted))
       .then((data) => {
+        console.log(data);
         let newFoods = food.filter((item) => item._id !== data._id);
         setFood(newFoods);
+        
       })
       .catch((error) => console.log(error));
 
     navigate("/menus");
   };
+
+ 
 
 
   return (

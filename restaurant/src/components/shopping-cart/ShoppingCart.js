@@ -18,12 +18,12 @@ useEffect(()=> {
   currentUser
   .then(res => setCart([...res.user.orders]))
   
-},[currentUser])
+},[])
 
 const removeItem = (itemToRemove) => {
 
-    authService.updateUser(user._id, itemToRemove._id)
- 
+    const res = authService.updateUser(user._id, itemToRemove._id)
+    console.log(res);
    setCart(cart.filter(item => item !== itemToRemove))
    
 
