@@ -8,9 +8,13 @@ export const Navbar = () => {
     const {user} = useContext(AuthContext)
     const {isAdmin, admin} = useContext(AdminContext)
 
-    authService.getUser(user._id)
-    .then(res => isAdmin(res.user))
-    
+  if(user._id){
+     authService.getUser(user._id)
+        .then(res => isAdmin(res.user))
+  }
+       
+
+  
     let activeStyle = {
         textDecoration: "underline",
       };
@@ -30,24 +34,41 @@ export const Navbar = () => {
 
                 <div id="main-nav" className="collapse navbar-collapse">
                     <ul className="nav navbar-nav">
-                        <li><Link to='/'>Home</Link></li>
-                        <li><Link to='/menus'>Our menus</Link></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        {admin &&
-                        <li><Link to ='/add-food'>Add Food</Link></li>
-                        }
+                        <li><NavLink to='/' style={({ isActive }) =>
+                            isActive ? activeStyle : undefined}>Home
+                            </NavLink>
+                        </li>
+                        <li><NavLink to='/menus' style={({ isActive }) =>
+                            isActive ? activeStyle : undefined}>Our menus
+                            </NavLink>
+                        </li>
+                       
+                        
                         {user.email 
                         ?
                         <div>
-                             <li><Link to="/logout">Logout</Link></li> 
-                             <li><NavLink to="/shopping-cart" style={({ isActive }) =>
+                            <li><Link to="/logout">Logout</Link></li> 
+                            
+                            <li><NavLink to="/shopping-cart" style={({ isActive }) =>
                             isActive ? activeStyle : undefined}>Shopping Cart
                             </NavLink>
-                             </li>
+                            </li>
+                            {admin &&    
+                            <li><NavLink to ='/add-food' style={({ isActive }) =>
+                                isActive ? activeStyle : undefined}>Add Food
+                            </NavLink>
+                            </li> 
+                            }
                         </div>
                         : <div>
-                         <li><Link to='/register'>Register</Link></li> 
-                         <li><Link to='/login'>Login</Link></li>   
+                            <li><NavLink to='/register' style={({ isActive }) =>
+                                isActive ? activeStyle : undefined}>Register
+                                </NavLink>
+                            </li> 
+                            <li><NavLink to='/login' style={({ isActive }) =>
+                                isActive ? activeStyle : undefined}>Login
+                                </NavLink>
+                            </li>   
                          
                        
                         </div>

@@ -1,5 +1,4 @@
 const { userModel } = require('../models/User');
-const {foodModel} = require('../models/Food')
 const { errorHandler } = require('../utils/errorHandler');
 const { ValidationError } = require('../utils/createValidationError');
 const mongoose = require('mongoose')
@@ -13,7 +12,10 @@ const secret = 'hduerhef748fuheri'
 //Working Routes
 const getUser = async (req, res) => {
   const { userId } = req.params;
-
+  if(!userId){
+   return
+  } 
+ 
   try {
     const user = await userModel.findById(userId).populate('orders')
     
@@ -36,7 +38,7 @@ const createToken = (user) => {
      jwt.sign(payload, secret, { expiresIn: "2d" }, (err, decodedToken) => {
               if(err){
                   reject(err)
-                  console.log("Error");
+                
               }
               resolve(decodedToken)
             });
@@ -46,21 +48,22 @@ const createToken = (user) => {
   
 // LOGIN
 const loginHandler = async (email, password) => {
-    
-    const user = await userModel.findOne({ email });
-console.log(user);
-    if (!user) {
-      throw { message: "Email is not valid" };
-    }
-console.log(user.password, password);
-    const validPass = await bcrypt.compare(password, user.password);
 
+     const user = await userModel.findOne({ email });
+     
+     if (!user) {
+      throw new ValidationError('Email is not valid.', 404);
+     
+      }
+      const validPass = await bcrypt.compare(password, user.password);
+      console.log(validPass);
 
     if (!validPass) {
-      throw { message: "Password is not valid" };
+      throw new ValidationError('Password is not valid.', 404);
+     
     }
-
-return user
+    return user
+  
 };
 
 
@@ -70,13 +73,13 @@ return user
     try{
 
       const user = await loginHandler(email, password)
-  
+      
       const token = await createToken(user)
       res.cookie('session', token, {httpOnly: true})
       res.status(200).json({ email: user.email, _id: user._id, accessToken: token });
 
   }catch(error){
-   console.log(error);
+    errorHandler(error, res, req);
   }
   }
 
@@ -86,17 +89,18 @@ return user
 
 const addUser = async (req, res) => {
   const { email, phoneNumber, password, repeatPassword} = req.body;
-
+ 
   const data = { email, phoneNumber, password};
 
   if (password !== repeatPassword) {
-    res.status(404).send({error: "Password don't match"})
+    res.status(404).send({message: "Password don't match"})
   }
 
   try {
     const createdUser = await userModel.create({...data});
+    console.log(createdUser);
     const token = await createToken(createdUser)
- 
+
     const cookie = res.cookie('session', token, {httpOnly: true})
     res.status(200).json({ email: createdUser.email, _id: createdUser._id, accessToken: token });
 
@@ -108,9 +112,7 @@ const addUser = async (req, res) => {
 
 //LOGOUT
 const logout = (req, res) => {
- 
   const cookie = res.clearCookie("session");
-  res.status(200).json({cookie: "done"});
 }
 
   const populateUser = async(req, res) => {
@@ -123,8 +125,7 @@ const logout = (req, res) => {
   }
 
   const updateUser = async(req, res) => {
-    
-//  const order = foodModel.findById(req.params.foodId)
+
 try {
      const user = await userModel.findById(req.params.userId)
 
@@ -139,34 +140,38 @@ try {
  
   }
 ;
-// //
-// const updateUser = async (req, res) => {
-//   const { userId } = req.params;
-//   const { email, password, phoneNumber, orders } = req.body;
-//   const data = {  email, password, phoneNumber, orders };
-// console.log(data);
-//   try {
-//     const user = await userModel
-//       .findByIdAndUpdate(userId, data, { runValidators: true, new: true })
 
+const getOrders = async(req, res) => {
+  const result = {
+    user: {
+        
+    }
+  }
+  const allUsers = await userModel.find()
+  const users = allUsers.filter(el => el.orders.length > 0)
+  
+  for(let user of users){ 
 
-//     res.status(200).json({ user: user.toObject() });
-//   } catch (error) {
-//     errorHandler(error, res, req);
-//   }
-// };
+    let email = user.email
+    if(result.user[email]){
+      for(let order of user.orders){
+        result.user[email].push(order)
+      }
+    }else{
+      result.user[email] = [] 
+      
+      for(let order of user.orders){
+        result.user[email].push(order)
+      }
+    }
+    
 
-// const deleteUser = async (req, res) => {
-//   const { userId } = req.params;
+  
+  }
 
-//   try {
-//     await userModel.findByIdAndUpdate(userId, { isDeleted: true });
-
-//     res.status(200).json({ userId });
-//   } catch (error) {
-//     errorHandler(error, res, req);
-//   }
-// };
+ 
+return res.status(200).json({ result: result.user });
+}
 
 const getUsers = async (req, res) => {
   const page = parseInt(req?.query?.page) || 1;
@@ -208,10 +213,10 @@ module.exports = {
   getUser,
   addUser,
    updateUser,
-  // deleteUser,
   getUsers,
   populateUser,
   createToken,
   login,
-  logout
+  logout,
+  getOrders
 };

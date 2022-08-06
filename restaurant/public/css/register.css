@@ -25,3 +25,9 @@ img{
     margin-left: 170px;
     margin-top: 10px;
 }
+
+.form-error {
+    color: black;
+    font-size: 18px;
+    font-family: 'Spectral', serif;
+  }

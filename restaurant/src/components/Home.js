@@ -8,8 +8,8 @@ export const Home = () => {
             <div className="row">
                 <div className="col-md-6 col-md-offset-3">
                     <h4>Here you can find delecious foods</h4>
-                    <h2>Asian Restaurant</h2>
-                    <p>Quisque nec nibh id lacus fringilla eleifend sed sit amet sem. Donec lectus odio, mollis a nisl non, tempor interdum nisl.</p>
+                    <h2>Restaurant</h2>
+                    
                   
                 </div>
             </div>
@@ -27,7 +27,7 @@ export const Home = () => {
                 </div>
                 <div className="col-md-4">
                     <div className="cook-content">
-                        <h4>We cook delecious</h4>
+                        <h4>We cook delicious</h4>
                         <div className="contact-content">
                             <span>You can call us on:</span>
                             <h6>+ 1234 567 8910</h6>

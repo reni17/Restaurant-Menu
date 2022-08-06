@@ -6,14 +6,7 @@ export const EditFood = (props) => {
 
     const {foodId} = useParams()
     const [food, setFood] = useState({});
- 
-    // const [values, setValues] = useState({
-    //     name: food.name,
-    //     price: food.price,
-    //     description: food.description,
-    //     type: food.description,
-    //     imageUrl: food.imageUrl
-    // })
+
 
     useEffect(() => {
       foodService.getOne(foodId).then(res => setFood(res.food));

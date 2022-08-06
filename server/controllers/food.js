@@ -84,7 +84,7 @@ try{
   }
 
 const editFood = async (req, res) => {
-  console.log('edit');
+
   const foodId = req.params.foodId
   const { name, price, description, type, imageUrl } = req.body;
   const data = {  name, price, description, type, imageUrl };
@@ -95,7 +95,8 @@ try {
   console.log(editedFood);
   res.status(200).json({ editedFood});
 } catch (error) {
-  
+  errorHandler(error, res, req);
+
 }
 }
   

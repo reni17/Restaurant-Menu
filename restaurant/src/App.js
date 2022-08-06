@@ -16,14 +16,15 @@ import { Logout } from './components/logout/Logout';
 
 import {Routes, Route} from 'react-router-dom'
 
-import * as authService from './services/authService'
-// import { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
 import { useLocalStorage } from './hooks/useLocalStorage';
 import {  useState } from 'react';
 import { AddFood } from './components/admin/add-food/AddFood';
 import { EditFood } from './components/admin/edit-food/EditFood';
-import { FoodContext } from './contexts/FoodContext';
+import {AllOrders} from './components/admin/all-orders/orders/AllOrders'
+import { NotFound } from './components/not-found/NotFound';
+
+import { GuestGuard } from './common/GuestGuard';
+import {UserGuard} from './common/UserGuard'
 
 function App() {
 
@@ -31,19 +32,14 @@ const [auth, setAuth] = useLocalStorage('auth', {})
 const [admin, setAdmin] = useState(false)
 
 
-const isAdmin = (user) => {
 
+const isAdmin = (user) => {
     if(!user){
       return setAdmin(false)
     }else{
       return setAdmin(user.isAdmin)
     }
-
-  
- 
-  // return setAdmin(user.isAdmin)
 }
-
 
 
 const userLogin = (authData) => {
@@ -55,32 +51,33 @@ const userLogout = () => {
   return setAuth({})
 }
 
-const editFoodHandler = () => {
-  
-}
+
   return (
-      <AuthContext.Provider value = {{user: auth, userLogin, userLogout}}>
+      <AuthContext.Provider value = {{user: auth, userLogin, userLogout, isAuthenticated: auth.accessToken }}>
       <AdminContext.Provider value = {{isAdmin, admin}}>
-      <FoodContext.Provider value = {editFoodHandler}>
+
     <div className="App">
       <Navbar/>
     
       <Routes>
         <Route path = '/' element = {<Home/>}> </Route>
         <Route path='/menus' element = {<Menues/>}> </Route>
-        <Route path='/register' element = {<Register/>}> </Route>
-        <Route path='/login' element = {<Login/>}> </Route>
+
+          <Route path = '/edit-food/:foodId' element = {(<GuestGuard><EditFood/></GuestGuard>)}/>
+          <Route path = '/add-food' element = {(<GuestGuard><AddFood/></GuestGuard>)}/>
+          <Route path = '/all-orders' element = {(<GuestGuard><AllOrders/></GuestGuard>)}/>
+          <Route path = '/logout' element = {(<GuestGuard><Logout></Logout></GuestGuard>)}/>
+
+        <Route path='/login' element = {(<UserGuard><Login/></UserGuard>)}> </Route>
+        <Route path='/register' element = {(<UserGuard><Register/></UserGuard>)}> </Route>
         <Route path='/menus/:typeMenu/' element = {<MenuCatalog/>}> </Route>
-        <Route path = '/logout' element = {<Logout></Logout>}></Route>
         <Route path='/details/:foodId' element = {<Details/>}> </Route>
         <Route path='/shopping-cart' element = {<ShoppingCart/>}></Route>
-        <Route path = '/add-food' element = {<AddFood></AddFood>}></Route>
-        <Route path = '/edit-food/:foodId' element = {<EditFood></EditFood>}></Route>
+        <Route path = '*' element = {<NotFound></NotFound>}></Route>
       </Routes>
    
       <Footer/>
     </div>
-    </FoodContext.Provider>
     </AdminContext.Provider>  
     </AuthContext.Provider>
   );

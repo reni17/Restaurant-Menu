@@ -24,7 +24,10 @@ export const Details = () => {
   };
 
   const deleteHandler = () => {
-    const deleted = foodService
+    const confirmation = window.confirm('Are you sure you want to delete this food?')
+
+    if(confirmation){
+      const deleted = foodService
       .deleteFood(food._id)
       .then((res) => res.json(deleted))
       .then((data) => {
@@ -36,6 +39,8 @@ export const Details = () => {
       .catch((error) => console.log(error));
 
     navigate("/menus");
+    }
+    
   };
 
  
@@ -62,13 +67,13 @@ export const Details = () => {
             </h1>
 
             <p className={styles["recipe-desc"]}>{food.description}</p>
-            <button
+            {user.email && <button
               onClick={orderHandler}
               className={styles["recipe-save"]}
               type="button"
             >
               ORDER
-            </button>
+            </button>}
             {admin && (
               <div>
                 <button

@@ -8,12 +8,12 @@ const navigate = useNavigate()
 const {userLogout} = useContext(AuthContext) 
 useEffect(() => {
 
-    authService.logout()
-    .then(() => {
+    // authService.logout()
+    // .then(() => {
         userLogout()
         navigate('/')
-    })
-    .catch(() => navigate('/'))
+    // })
+    // .catch(() => navigate('/'))
 })
 return null
 }

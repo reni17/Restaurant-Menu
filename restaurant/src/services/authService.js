@@ -3,6 +3,7 @@ import * as request from './requester'
 
 export const getUser = (id) => {
 
+    console.log(id);  
     return  fetch(`http://localhost:3005/restaurant/users/${id}`)
    .then(res => res.json()) 
    .catch(err=> console.log(err))
@@ -26,31 +27,20 @@ export const updateUser  = (userId, foodId) => {
 }
 
 
-// export const updateUser  = (userId, foodId, data) => {
-//   return fetch(`http://localhost:3005/restaurant/userUpdate/${userId}/${foodId}`, {
-//     method: 'Put',
-//     header: {
-//       'content-type': 'application/json'
-//     },
-//     body: JSON.stringify(data)
-//   })
-//   .then(res => res.json())
-//   .then(data => data.user)
- 
-  
-
-// }
-
-
 const baseUrl = 'http://localhost:3005/restaurant'
 
 export const login = (email, password) => request.post(`${baseUrl}/login`, {email, password})
 
 export const register = (email, phoneNumber, password, repeatPassword) =>{
- return request.post(`${baseUrl}/users/`, {email, phoneNumber, password, repeatPassword})
+ return request.post(`${baseUrl}/users`, {email, phoneNumber, password, repeatPassword})
 }
 
 export const logout = ()=> {
  return fetch(`${baseUrl}/logout`)
  .then(() => localStorage.clear())
+}
+
+export const getOrders = () => {
+  return fetch(`${baseUrl}/all-orders`)
+  .then(res => res.json())
 }
