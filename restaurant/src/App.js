@@ -25,6 +25,7 @@ import { NotFound } from './components/not-found/NotFound';
 
 import { GuestGuard } from './common/GuestGuard';
 import {UserGuard} from './common/UserGuard'
+import { AdminGuard } from './common/AdminGuard';
 
 function App() {
 
@@ -63,9 +64,9 @@ const userLogout = () => {
         <Route path = '/' element = {<Home/>}> </Route>
         <Route path='/menus' element = {<Menues/>}> </Route>
 
-          <Route path = '/edit-food/:foodId' element = {(<GuestGuard><EditFood/></GuestGuard>)}/>
-          <Route path = '/add-food' element = {(<GuestGuard><AddFood/></GuestGuard>)}/>
-          <Route path = '/all-orders' element = {(<GuestGuard><AllOrders/></GuestGuard>)}/>
+          <Route path = '/edit-food/:foodId' element = {(<GuestGuard><AdminGuard><EditFood/></AdminGuard></GuestGuard>)}/>
+          <Route path = '/add-food' element = {(<GuestGuard><AdminGuard><AddFood/></AdminGuard></GuestGuard>)}/>
+          <Route path = '/all-orders' element = {(<GuestGuard><AdminGuard><AllOrders/></AdminGuard></GuestGuard>)}/>
           <Route path = '/logout' element = {(<GuestGuard><Logout></Logout></GuestGuard>)}/>
 
         <Route path='/login' element = {(<UserGuard><Login/></UserGuard>)}> </Route>

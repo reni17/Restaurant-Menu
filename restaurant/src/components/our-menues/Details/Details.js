@@ -27,18 +27,8 @@ export const Details = () => {
     const confirmation = window.confirm('Are you sure you want to delete this food?')
 
     if(confirmation){
-      const deleted = foodService
-      .deleteFood(food._id)
-      .then((res) => res.json(deleted))
-      .then((data) => {
-        console.log(data);
-        let newFoods = food.filter((item) => item._id !== data._id);
-        setFood(newFoods);
-        
-      })
-      .catch((error) => console.log(error));
-
-    navigate("/menus");
+      foodService.deleteFood(food._id)
+      navigate("/menus");
     }
     
   };

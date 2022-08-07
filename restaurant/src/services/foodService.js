@@ -30,7 +30,6 @@ export const getOne =async (id) => {
 }
 
 export const deleteFood = async (foodId) => {
-console.log('delete');
   const response = await fetch(`http://localhost:3005/restaurant/food/${foodId}`, {
      method: 'DELETE'
     
@@ -52,13 +51,3 @@ const result = await response.json()
 return result.editedFood
 }
 
-  // export const updateFood = (id, data) => {
-  //   console.log(data);
-  // return fetch(`http://localhost:3005/restaurant/update-food/${id}`, {
-  //   method: "PUT",
-  // body: JSON.stringify(data)
-    
-  // })
-  // .then(res=> res.json())
-
-  // }

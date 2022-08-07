@@ -57,7 +57,7 @@ const submitHandler = (e) => {
 
                     <div className="form-outline mb-4">
                       <label className="form-label" htmlFor="form3Example1q">Type</label>
-                      <input type="text" id="form3Example1q" className="form-control" name = "type"  value = {values.type} onChange = {changeHandler}/>
+                      <input type="text" placeholder="breakfast, lunch, dinner or dessert" id="form3Example1q" className="form-control" name = "type"  value = {values.type} onChange = {changeHandler}/>
                     </div>
 
                     <div className="form-outline mb-4">

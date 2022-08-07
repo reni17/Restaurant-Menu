@@ -46,7 +46,7 @@ export const Navbar = () => {
                         
                         {user.email 
                         ?
-                        <div>
+                        <>
                             <li><Link to="/logout">Logout</Link></li> 
                             
                             <li><NavLink to="/shopping-cart" style={({ isActive }) =>
@@ -54,13 +54,20 @@ export const Navbar = () => {
                             </NavLink>
                             </li>
                             {admin &&    
+                            <>
                             <li><NavLink to ='/add-food' style={({ isActive }) =>
                                 isActive ? activeStyle : undefined}>Add Food
                             </NavLink>
-                            </li> 
+                            </li>
+                            
+                            <li><NavLink to ='/all-orders' style={({ isActive }) =>
+                                isActive ? activeStyle : undefined}>All Orders
+                            </NavLink>
+                            </li>
+                            </> 
                             }
-                        </div>
-                        : <div>
+                        </>
+                        : <>
                             <li><NavLink to='/register' style={({ isActive }) =>
                                 isActive ? activeStyle : undefined}>Register
                                 </NavLink>
@@ -71,7 +78,7 @@ export const Navbar = () => {
                             </li>   
                          
                        
-                        </div>
+                        </>
                     }
                       
 
